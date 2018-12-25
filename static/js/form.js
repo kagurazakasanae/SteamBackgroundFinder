@@ -1,7 +1,7 @@
 /*
 
 	Steam Background Finder
-    Copyright (C) 2018 Xxmarijnw
+    Copyright (C) 2018 Xxmarijnw & Modified by KagurazakaSanae
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published
@@ -32,7 +32,7 @@ $(document).ready(function(){
 		var formData = $("form").serialize();
 		// Send AJAX request
 		$.ajax({
-			url: 'handler',
+			url: 'handler.php',
 			type: 'POST',
 
 			// Form data
