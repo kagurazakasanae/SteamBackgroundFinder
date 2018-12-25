@@ -64,10 +64,6 @@ if($bg_data == -3 || $bg_data == -5){
 
 $appid = $bg_data['appid'];
 
-$app_details = json_decode(urllib('GET', 'https://store.steampowered.com/api/appdetails?appids='.$appid), true);
-@$app_name = $app_details[$appid]['data']['name'];
-$app_name = ($app_name !== null) ? 'This background is from '.$app_name : '';
-
 $steam_card_exchange = 'https://www.steamcardexchange.net/index.php?gamepage-appid-'.$appid;
 $steamdesign = 'https://steam.design/#'.$background;
 			
@@ -80,7 +76,7 @@ if(($price_overview['success'] === true) && ($price_overview['lowest_price'] !==
 	$price = ' ('.$price_overview['lowest_price'].')';
 }
 
-echo json_encode(array('background'=>$background, 'steam_card_exchange'=>$steam_card_exchange, 'market'=>$market, 'app_name'=>$app_name, 'steamdesign'=>$steamdesign, 'price'=>$price));
+echo json_encode(array('background'=>$background, 'steam_card_exchange'=>$steam_card_exchange, 'market'=>$market, 'steamdesign'=>$steamdesign, 'price'=>$price));
 
 function getBGMarketUrl($bgurl){
 	$t = explode('/', $bgurl);
@@ -88,7 +84,7 @@ function getBGMarketUrl($bgurl){
 	$filename = $t[array_search('items', $t) + 2];
 	$market_search_contents = urllib('GET', 'https://steamcommunity.com/market/search?category_753_Game%5B%5D=tag_app_' . $appid . '&category_753_item_class%5B%5D=tag_item_class_3&appid=753');
 	if(!stristr($market_search_contents, 'Showing results for')){
-		file_put_contents('err.html', $market_search_contents);
+		//file_put_contents('err.html', $market_search_contents);
 		return -2;	//content error
 	}
 	if(stristr($market_search_contents, 'There were no items matching your search')){
