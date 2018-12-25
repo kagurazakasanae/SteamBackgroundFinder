@@ -55,8 +55,7 @@ $(document).ready(function(){
 						$("#smp").html('<a target="_blank" rel="noopener noreferrer" href="' + results['market'] + '">Buy it' + results['price'] + '</a>');
 						$("#sce").html('<a target="_blank" rel="noopener noreferrer" href="' + results['steam_card_exchange'] + '">Steam Card Exchange</a>');
 						$("#gis").html('<a target="_blank" rel="noopener noreferrer" href="' + results['steamdesign'] + '">Steam Design</a>');
-						$("#dil").html('<a target="_blank" rel="noopener noreferrer" href="' + results['background'] + '">Direct Link</a>');
-						$("#game").html(results['app_name']);
+						$("#dil").html('<a target="_blank" rel="noopener noreferrer" href="' + results['background'] + '">Original Image</a>');
 					}, 330);
 					$("ul").delay(660).fadeIn();
 					$("#result").delay(620).fadeIn(660);
