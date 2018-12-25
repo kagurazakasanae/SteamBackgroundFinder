@@ -52,13 +52,13 @@ if($background == -1){
 	exit();
 }
 
-$bg_data = getBGMarketUrl($link);
+$bg_data = getBGMarketUrl($background);
 if($bg_data == -2 or $bg_data == -1 or $bg_data == -4){
-	echo 'Our server failed to access to Steam\'s server, please try again later';
+	echo 'Oops! Our server may be temporarily blocked by Steam, please try again later';
 	die;
 }
 if($bg_data == -3 || $bg_data == -5){
-	echo 'We can not fetch out any results that match this background, please search it manually';
+	echo 'Oops! We can not fetch out any results that match this background, please try again later';
 	die;
 }
 
@@ -77,7 +77,7 @@ $market = $bg_data['url'];
 $market_hash_name = $bg_data['hash_name'];
 @$price_overview   = json_decode(urllib('GET', "https://steamcommunity.com/market/priceoverview/?appid=753&currency=1&market_hash_name=".$market_hash_name), true);
 if(($price_overview['success'] === true) && ($price_overview['lowest_price'] !== null)){
-	' ('.$price_overview['lowest_price'].')';
+	$price = ' ('.$price_overview['lowest_price'].')';
 }
 
 echo json_encode(array('background'=>$background, 'steam_card_exchange'=>$steam_card_exchange, 'market'=>$market, 'app_name'=>$app_name, 'steamdesign'=>$steamdesign, 'price'=>$price));
@@ -88,6 +88,7 @@ function getBGMarketUrl($bgurl){
 	$filename = $t[array_search('items', $t) + 2];
 	$market_search_contents = urllib('GET', 'https://steamcommunity.com/market/search?category_753_Game%5B%5D=tag_app_' . $appid . '&category_753_item_class%5B%5D=tag_item_class_3&appid=753');
 	if(!stristr($market_search_contents, 'Showing results for')){
+		file_put_contents('err.html', $market_search_contents);
 		return -2;	//content error
 	}
 	if(stristr($market_search_contents, 'There were no items matching your search')){
@@ -108,7 +109,8 @@ function getBGMarketUrl($bgurl){
 		}
 		if(stristr($item_detail_page_contents, $filename)){
 			$title = str_replace('Steam Community Market :: Listings for ', '', explode('</title>', explode('<title>', $item_detail_page_contents)[1])[0]);
-			$hash_name = explode('/', $s)[array_search('listings', $t) + 2];
+			$hash_name = explode('/', $s);
+			$hash_name = $hash_name[array_search('listings', $hash_name) + 2];
 			return array('name' => $title, 'url' => $s, 'appid' => $appid, 'hash_name' => $hash_name);
 		}
 	}
