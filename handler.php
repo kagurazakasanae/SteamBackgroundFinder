@@ -54,7 +54,7 @@ if($background == -1){
 
 $bg_data = getBGMarketUrl($background);
 if($bg_data == -2 or $bg_data == -1 or $bg_data == -4){
-	echo 'Oops! Our server may be temporarily blocked by Steam, please try again later';
+	echo 'Oops! Our server may be temporarily blocked by Steam, please try again later (' . $bg_data . ')';
 	die;
 }
 if($bg_data == -3 || $bg_data == -5){
@@ -119,6 +119,9 @@ function getUserProfileBGUrl($profile_url){
 		return -1;	//can not get background link
 	}
 	$link = explode('\' );">', explode('<div class="no_header profile_page has_profile_background " style="background-image: url( \'', $profile_page_content)[1])[0];
+	if(strlen($link) > 128 || strlen($link) < 10){
+		$link = explode('\' );">', explode('<div class="no_header profile_page has_profile_background lnyprofile" style="background-image: url( \'', $profile_page_content)[1])[0];
+	}
 	return $link;
 }
 
