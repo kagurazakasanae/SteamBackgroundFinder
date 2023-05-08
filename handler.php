@@ -118,11 +118,14 @@ function getUserProfileBGUrl($profile_url){
 	if(!stristr($profile_page_content, 'no_header profile_page has_profile_background')){
 		return -1;	//can not get background link
 	}
-	$link = explode('\' );">', explode('<div class="no_header profile_page has_profile_background " style="background-image: url( \'', $profile_page_content)[1])[0];
-	if(strlen($link) > 128 || strlen($link) < 10){
-		$link = explode('\' );">', explode('<div class="no_header profile_page has_profile_background lnyprofile" style="background-image: url( \'', $profile_page_content)[1])[0];
+	if(preg_match('/<div\s+class="([^"]*)"\s+style="[^"]*background-image:\s*url\(\s*[\'"]?(.+?)[\'"]?\s*\)[^"]*"[^>]*>/i', $profile_page_content, $matches)){
+		if(!stristr($matches[1], "has_profile_background")){
+			return -1;
+		}
+		return $matches[2];
+	}else{
+		return -1;	//can not get background link
 	}
-	return $link;
 }
 
 function urllib($function, $url, $data = array(), $header = array(), $timedout = 10){
